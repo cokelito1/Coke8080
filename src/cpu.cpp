@@ -53,7 +53,18 @@ void cpu::cycle() {
     case 0x00:
       NOP();
       break;
-
+    case 0x10:
+      NOP();
+      break;
+    case 0x20:
+      NOP();
+      break;
+    case 0x30:
+      NOP();
+      break;
+    case 0x40:
+      MOVBB();
+      break;
     case 0xF2:
       JPa16();
       break;
@@ -72,6 +83,14 @@ void cpu::NOP() {
   mainBank.PC.word++;
 
   cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "NOP" << endl;
+}
+
+void cpu::MOVBB() {
+  cycles -= 5;
+  mainBank.BC.bytes.high = mainBank.BC.bytes.high;
+  mainBank.PC.word++;
+
+  cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, B" << endl;
 }
 
 void cpu::JPa16() {

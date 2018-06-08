@@ -22,6 +22,7 @@ int main()
   std::cout << "Coke8080 ver 0.01" << std::endl;
 
   machine *maquina = new machine();
+  maquina->loadRom("./rom.bin");
   maquina->startEmu();
   delete maquina;
 

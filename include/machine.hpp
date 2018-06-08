@@ -17,6 +17,8 @@ This program is free software: you can redistribute it and/or modify
 #define _MACHINE_HPP_
 
 #include <cstdint>
+#include <iostream>
+#include <string>
 
 #include "memory.hpp"
 #include "cpu.hpp"
@@ -25,6 +27,8 @@ class machine {
 public:
   machine();
   ~machine();
+
+  bool loadRom(std::string filePath);
 
   void startEmu();
 private:

@@ -13,11 +13,13 @@ This program is free software: you can redistribute it and/or modify
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <fstream>
+
 #include "machine.hpp"
 
 machine::machine() {
   chip = new cpu(100);
-  mem = new memory<uint8_t>(4096000);
+  mem = new memory<uint8_t>(0x10000);
 
   chip->setMemInstance(mem);
 }
@@ -27,17 +29,31 @@ machine::~machine() {
   delete mem;
 }
 
+bool machine::loadRom(std::string filePath) {
+  ifstream rom(filePath, ios::in|ios::binary|ios::ate);
+  if(rom.is_open()) {
+    ifstream::pos_type size = rom.tellg();
+    uint8_t *romData = new uint8_t[size];
+    rom.seekg(0, ios::beg);
+    rom.read((char *) romData, size);
+    rom.close();
+
+    if(size > 0xFFFF) {
+      return false;
+    } else {
+      for(int i = 0; i < size; i++) {
+        mem->writeMemory(romData[i], i);
+      }
+    }
+
+    delete[] romData;
+  } else {
+    return false;
+  }
+  return true;
+}
+
 void machine::startEmu() {
-  mem->writeMemory(0xF2, 0x00);
-  mem->writeMemory(0x4A, 0x01);
-  mem->writeMemory(0x5C, 0x02);
-
-  mem->writeMemory(0x00, 0x5C4A);
-
-  mem->writeMemory(0xF2, 0x5C4B);
-  mem->writeMemory(0x00, 0x5C4C);
-  mem->writeMemory(0x00, 0x5C4D);
-
   while(chip->getCycles() > 0){
     chip->cycle();
   }
