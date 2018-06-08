@@ -19,6 +19,8 @@ This program is free software: you can redistribute it and/or modify
 
 int main()
 {
+  std::cout << "Coke8080 ver 0.01" << std::endl;
+
   machine *maquina = new machine();
   maquina->startEmu();
   delete maquina;
