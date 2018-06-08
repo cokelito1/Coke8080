@@ -166,7 +166,7 @@ void cpu::JPa16() {
   mainBank.PC.word = addrJump;
 }
 
-void cpu::MOV(uint8_t dst, uint8_t src) {
+void cpu::MOV(uint8_t &dst, uint8_t src) {
   dst = src;
 
   mainBank.PC.word++;

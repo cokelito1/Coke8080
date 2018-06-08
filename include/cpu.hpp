@@ -53,7 +53,7 @@ public:
 
   void cycle();
   void setMemInstance(memory<uint8_t> *instance);
-  
+
   bank_t getMainBank();
 private:
   int32_t cycles;
@@ -62,7 +62,7 @@ private:
   void NOP();   //0x00, 0x10, 0x20, 0x30
   void JPa16(); //0xF2
 
-  void MOV(uint8_t dst, uint8_t src);
+  void MOV(uint8_t &dst, uint8_t src);
 
   memory<uint8_t> *mem = nullptr;
 };

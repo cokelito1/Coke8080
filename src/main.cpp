@@ -27,11 +27,5 @@ int main()
   maquina->startEmu();
   delete maquina;
 
-  std::cout << "Partiendo maquina 2" << std::endl;
-  machine *maquina2 = new machine();
-  maquina2->loadRom("./test.bin");
-  maquina2->startEmu();
-  delete maquina2;
-
   return 0;
 }
