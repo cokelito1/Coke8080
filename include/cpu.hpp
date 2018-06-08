@@ -59,9 +59,9 @@ private:
   bank_t mainBank;
 
   void NOP();   //0x00, 0x10, 0x20, 0x30
-  void MOVBB(); //0x40
-
   void JPa16(); //0xF2
+
+  void MOV(uint8_t dst, uint8_t src);
 
   memory<uint8_t> *mem = nullptr;
 };

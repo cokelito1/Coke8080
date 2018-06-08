@@ -18,7 +18,7 @@ This program is free software: you can redistribute it and/or modify
 #include "machine.hpp"
 
 machine::machine() {
-  chip = new cpu(100);
+  chip = new cpu(1000);
   mem = new memory<uint8_t>(0x10000);
 
   chip->setMemInstance(mem);

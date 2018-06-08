@@ -32,6 +32,12 @@ cpu::cpu() {
 }
 
 cpu::cpu(int32_t cycles) {
+  mainBank.AF.word = 0x00;
+  mainBank.BC.word = 0x00;
+  mainBank.DE.word = 0x00;
+  mainBank.HL.word = 0x00;
+  mainBank.SP.word = 0x00;
+  mainBank.PC.word = 0x00;
   this->cycles = cycles;
 }
 
@@ -63,8 +69,20 @@ void cpu::cycle() {
       NOP();
       break;
     case 0x40:
-      MOVBB();
+      MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, B" << endl;
       break;
+    case 0x41:
+      MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.low);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, C" << endl;
+      break;
+    case 0x42:
+      MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, D" << endl;
+    case 0x43:
+      MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.low);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, E" << endl;
+
     case 0xF2:
       JPa16();
       break;
@@ -85,14 +103,6 @@ void cpu::NOP() {
   cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "NOP" << endl;
 }
 
-void cpu::MOVBB() {
-  cycles -= 5;
-  mainBank.BC.bytes.high = mainBank.BC.bytes.high;
-  mainBank.PC.word++;
-
-  cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, B" << endl;
-}
-
 void cpu::JPa16() {
   cycles -= 10;
   uint16_t addrJump = 0x00;
@@ -106,4 +116,11 @@ void cpu::JPa16() {
   cout << "0x" << setfill('0') << setw(4) << hex << uppercase << (mainBank.PC.word - 0x03) << ": " << "JP 0x" << setfill('0') << setw(4) << addrJump << endl;
 
   mainBank.PC.word = addrJump;
+}
+
+void cpu::MOV(uint8_t dst, uint8_t src) {
+  dst = src;
+
+  mainBank.PC.word++;
+  cycles -= 5;
 }

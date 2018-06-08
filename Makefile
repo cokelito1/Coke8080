@@ -15,7 +15,7 @@ OBJ =	$(BUILDDIR)/cpu.o				\
 all: checkdirs main
 
 main:	$(OBJ)
-	$(CC) $(OBJ) -o main
+	$(CC) $(OBJ) -o main.elf
 
 checkdirs: $(BUILDDIR)
 
