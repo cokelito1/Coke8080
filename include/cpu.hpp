@@ -53,7 +53,8 @@ public:
 
   void cycle();
   void setMemInstance(memory<uint8_t> *instance);
-
+  
+  bank_t getMainBank();
 private:
   int32_t cycles;
   bank_t mainBank;

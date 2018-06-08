@@ -14,11 +14,12 @@ This program is free software: you can redistribute it and/or modify
 */
 
 #include <fstream>
+#include <iomanip>
 
 #include "machine.hpp"
 
 machine::machine() {
-  chip = new cpu(1000);
+  chip = new cpu(500);
   mem = new memory<uint8_t>(0x10000);
 
   chip->setMemInstance(mem);
@@ -56,5 +57,34 @@ bool machine::loadRom(std::string filePath) {
 void machine::startEmu() {
   while(chip->getCycles() > 0){
     chip->cycle();
+    writeRegistersToFile("registers.log");
   }
 }
+
+void machine::writeRegistersToFile(std::string filePath) {
+  bank_t currentRegisters = chip->getMainBank();
+
+  ofstream registerLog;
+  registerLog.open(filePath);
+
+  registerLog << "PC: 0x" <<  currentRegisters.PC.word << endl; 
+  registerLog << "SP: 0x" <<  currentRegisters.SP.word << endl;
+  
+  registerLog << "A: 0x" <<  (currentRegisters.AF.bytes.high >> 8) << ", ";
+  registerLog << "F: 0x" <<  (currentRegisters.AF.word & 0x00FF) << ", ";
+  registerLog << "AF: 0x" <<  currentRegisters.AF.word << endl;
+
+  registerLog << "B: 0x" <<  (currentRegisters.BC.bytes.high >> 8) << ", ";
+  registerLog << "C: 0x" <<  (currentRegisters.BC.word & 0x00FF) << ", ";
+  registerLog << "BC: 0x" <<  currentRegisters.BC.word << endl;
+
+  registerLog << "D: 0x" <<  (currentRegisters.DE.bytes.high >> 8) << ", ";
+  registerLog << "E: 0x" <<  (currentRegisters.DE.word & 0x00FF) << ", ";
+  registerLog << "DE: 0x" <<  currentRegisters.DE.word << endl;
+
+  registerLog << "H: 0x" <<  (currentRegisters.HL.bytes.high >> 8) << ", ";
+  registerLog << "L: 0x" <<  (currentRegisters.HL.word & 0x00FF) << ", ";
+  registerLog << "HL: 0x" <<  currentRegisters.HL.word << endl;
+
+  registerLog.close();
+ }

@@ -31,6 +31,7 @@ public:
   bool loadRom(std::string filePath);
 
   void startEmu();
+  void writeRegistersToFile(std::string filePath);
 private:
   cpu *chip;
   memory<uint8_t> *mem;
