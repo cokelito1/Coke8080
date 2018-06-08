@@ -20,9 +20,8 @@ This program is free software: you can redistribute it and/or modify
 int main()
 {
   machine *maquina = new machine();
-
   maquina->startEmu();
+  delete maquina;
 
-  std::cout << "Easy" << std::endl;
   return 0;
 }
