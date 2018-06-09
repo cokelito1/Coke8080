@@ -32,9 +32,12 @@ public:
 
   void startEmu();
   void writeRegistersToFile(std::string filePath);
+  void setLogFile(std::string logFile);
 private:
   cpu *chip;
   memory<uint8_t> *mem;
+
+  std::string logFile;
 };
 
 #endif

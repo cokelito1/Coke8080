@@ -19,10 +19,9 @@ This program is free software: you can redistribute it and/or modify
 #include "machine.hpp"
 
 machine::machine() {
-  chip = new cpu(20);
+  chip = new cpu(200);
   mem = new memory<uint8_t>(0x10000);
-
-  chip->setMemInstance(mem);
+  chip->setMemInstance(mem); 
 }
 
 machine::~machine() {
@@ -57,34 +56,38 @@ bool machine::loadRom(std::string filePath) {
 void machine::startEmu() {
   while(chip->getCycles() > 0){
     chip->cycle();
-    writeRegistersToFile("registers.log");
+    writeRegistersToFile(logFile);
   }
+}
+
+void machine::setLogFile(std::string logFile) {
+  this->logFile = logFile;
 }
 
 void machine::writeRegistersToFile(std::string filePath) {
   bank_t currentRegisters = chip->getMainBank();
 
   ofstream registerLog;
-  registerLog.open(filePath);
+  registerLog.open(filePath, ios::out | ios::app);
 
   registerLog << "PC: 0x" <<  currentRegisters.PC.word << endl;
   registerLog << "SP: 0x" <<  currentRegisters.SP.word << endl;
 
-  registerLog << "A: 0x" <<  (int*)(currentRegisters.AF.bytes.high >> 8) << ", ";
-  registerLog << "F: 0x" <<  (int*)(currentRegisters.AF.word & 0x00FF) << ", ";
-  registerLog << "AF: 0x" <<  (int*)currentRegisters.AF.word << endl;
+  registerLog << "A: 0x" <<  hex << (currentRegisters.AF.bytes.high >> 8) << ", ";
+  registerLog << "F: 0x" <<  hex << (currentRegisters.AF.word & 0x00FF) << ", ";
+  registerLog << "AF: 0x" <<  hex << currentRegisters.AF.word << endl;
 
-  registerLog << "B: 0x" <<  (int*)(currentRegisters.BC.bytes.high >> 8) << ", ";
-  registerLog << "C: 0x" <<  (int*)(currentRegisters.BC.word & 0x00FF) << ", ";
-  registerLog << "BC: 0x" <<  (int*)currentRegisters.BC.word << endl;
+  registerLog << "B: 0x" <<  hex << (currentRegisters.BC.bytes.high >> 8) << ", ";
+  registerLog << "C: 0x" <<  hex << (currentRegisters.BC.word & 0x00FF) << ", ";
+  registerLog << "BC: 0x" <<  hex << currentRegisters.BC.word << endl;
 
-  registerLog << "D: 0x" <<  (int*)(currentRegisters.DE.bytes.high >> 8) << ", ";
-  registerLog << "E: 0x" <<  (int*)(currentRegisters.DE.word & 0x00FF) << ", ";
-  registerLog << "DE: 0x" <<  (int*)currentRegisters.DE.word << endl;
+  registerLog << "D: 0x" <<  hex << (currentRegisters.DE.bytes.high >> 8) << ", ";
+  registerLog << "E: 0x" <<  hex << (currentRegisters.DE.word & 0x00FF) << ", ";
+  registerLog << "DE: 0x" <<  hex << currentRegisters.DE.word << endl;
 
-  registerLog << "H: 0x" <<  (int*)(currentRegisters.HL.bytes.high >> 8) << ", ";
-  registerLog << "L: 0x" <<  (int*)(currentRegisters.HL.word & 0x00FF) << ", ";
-  registerLog << "HL: 0x" <<  (int*)currentRegisters.HL.word << endl;
+  registerLog << "H: 0x" <<  hex << (currentRegisters.HL.bytes.high >> 8) << ", ";
+  registerLog << "L: 0x" <<  hex << (currentRegisters.HL.word & 0x00FF) << ", ";
+  registerLog << "HL: 0x" <<  hex << currentRegisters.HL.word << endl << endl;
 
   registerLog.close();
  }

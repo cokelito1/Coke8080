@@ -1,10 +1,9 @@
 CC=g++
-CXXFLAGS=	-Wall				\
-					-O2					\
-					-I include	\
-					-std=c++11	\
-					-ggdb				\
-					-c
+CXXFLAGS=	-Wall					\
+			-O2						\
+			-I include				\
+			-std=c++11				\
+			-c
 VPATH=src
 BUILDDIR=build
 

@@ -17,13 +17,19 @@ This program is free software: you can redistribute it and/or modify
 
 #include "machine.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
   std::cout << "Coke8080 ver 0.01" << std::endl;
 
+  if(argc < 3) {
+    std::cout << "Usage: " << argv[0] << " <rom.bin> <registers.log>" << std::endl;
+    return -1;
+  }
+
   std::cout << "Partiendo maquina 1" << std::endl;
   machine *maquina = new machine();
-  maquina->loadRom("./rom.bin");
+  maquina->loadRom(argv[1]);
+  maquina->setLogFile(argv[2]);
   maquina->startEmu();
   delete maquina;
 
