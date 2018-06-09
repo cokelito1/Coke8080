@@ -85,7 +85,7 @@ private:
   bool getSign();
 
   memory<uint8_t> *mem = nullptr;
-  memory<uint8_t> stack = nullptr;
+  memory<uint8_t> stack;
 };
 
 #endif //_CPU_HPP_

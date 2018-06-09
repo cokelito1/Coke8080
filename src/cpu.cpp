@@ -28,9 +28,7 @@ cpu::cpu() {
   mainBank.SP.word = 0x00;
   mainBank.PC.word = 0x00;
 
-  cycles = 0;
-
-  stack = new vector<uint8_t>(0xFFFF);
+  cycles = 0; 
 }
 
 cpu::cpu(int32_t cycles) {
@@ -43,7 +41,7 @@ cpu::cpu(int32_t cycles) {
   this->cycles = cycles;
 }
 
-cpu::~cpu() { }
+cpu::~cpu() {   }
 
 int32_t cpu::getCycles() {
   return cycles;
@@ -129,6 +127,7 @@ void cpu::cycle() {
     case 0x46:
       MOV(mainBank.BC.bytes.high, mem->readMemory(mainBank.HL.word));
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, (HL)" << endl;
+      cycles -= 2;
       break;
     case 0x47:
       MOV(mainBank.BC.bytes.high, mainBank.AF.bytes.high);
@@ -160,6 +159,7 @@ void cpu::cycle() {
     case 0x4E:
       MOV(mainBank.BC.bytes.low, mem->readMemory(mainBank.HL.word));
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, (HL)" << endl;
+      cycles -= 2;
       break;
     case 0x4F:
       MOV(mainBank.BC.bytes.low, mainBank.AF.bytes.high);
@@ -192,6 +192,7 @@ void cpu::cycle() {
     case 0x56:
       MOV(mainBank.DE.bytes.high, mem->readMemory(mainBank.HL.word));
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, (HL)" << endl;
+      cycles -= 2;
       break;
     case 0x57:
       MOV(mainBank.DE.bytes.high, mainBank.AF.bytes.high);
@@ -203,20 +204,75 @@ void cpu::cycle() {
       break; 
     case 0x59:
       MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
+      break;
     case 0x5A:
       MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.high);
+      break;
     case 0x5B:
       MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.low);
+      break;
     case 0x5C:
       MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.high);
+      break;
     case 0x5D:
       MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.low);
+      break;
     case 0x5E:
       MOV(mainBank.DE.bytes.low, mem->readMemory(mainBank.HL.word));
+      cycles -= 2;
+      break;
     case 0x5F:
       MOV(mainBank.DE.bytes.low, mainBank.AF.bytes.high);
+      break;
     case 0x60:
-
+      MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.high);
+      break;
+    case 0x61:
+      MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.low);
+      break;
+    case 0x62:
+      MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.high);
+      break;
+    case 0x63: 
+      MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.low);
+      break;
+    case 0x64:
+      MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.high);
+      break;
+    case 0x65:
+      MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.low);
+      break;
+    case 0x66:
+      MOV(mainBank.HL.bytes.high, mem->readMemory(mainBank.HL.word));
+      cycles -= 2;
+      break;
+    case 0x67:
+      MOV(mainBank.HL.bytes.high, mainBank.AF.bytes.high);
+      break;
+    case 0x68:
+      MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.high);
+      break;
+    case 0x69:
+      MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.low);
+      break;
+    case 0x6A:
+      MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.high);
+      break;
+    case 0x6B:
+      MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.low);
+      break;
+    case 0x6C:
+      MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.high);
+      break;
+    case 0x6D:
+      MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.low);
+      break;
+    case 0x6E:
+      MOV(mainBank.HL.bytes.low, mem->readMemory(mainBank.HL.word));
+      break;
+    case 0x6F:
+      MOV(mainBank.HL.bytes.low, mainBank.AF.bytes.high);
+      break;
     case 0xF2:
       JPa16();
       break;
