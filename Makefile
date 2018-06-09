@@ -25,4 +25,4 @@ $(BUILDDIR)/%.o: %.cpp
 	$(CC) $(CXXFLAGS) $< -o $@
 
 clean:
-	rm -fr build main
+	rm -fr build main *.log

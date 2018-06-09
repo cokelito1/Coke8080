@@ -280,9 +280,49 @@ void cpu::cycle() {
     case 0x71:
       MOVToMemory(mainBank.HL.word, mainBank.BC.bytes.low);
       break;
-    case 0x77:
+    case 0x72:
+      MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.high);
+      break;
+    case 0x73:
+      MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.low);
+      break;
+    case 0x74:
+      MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.high);
+      break;
+    case 0x75:
+      MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.low);
+      break;
+    case 0x76:
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "HLT" << endl;
       HLT();
+      break;
+    case 0x77:
+      MOVToMemory(mainBank.HL.word, mainBank.AF.bytes.high);
+      break;
+    case 0x78:
+      MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.high);
+      break;
+    case 0x79:
+      MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.low);
+      break;
+    case 0x7A:
+      MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.high);
+      break;
+    case 0x7B:
+      MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.low);
+      break;
+    case 0x7C:
+      MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.high);
+      break;
+    case 0x7D:
+      MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.low);
+      break;
+    case 0x7E:
+      MOV(mainBank.AF.bytes.high, mem->readMemory(mainBank.HL.word));
+      cycles -= 2;
+      break;
+    case 0x7F:
+      MOV(mainBank.AF.bytes.high, mainBank.AF.bytes.high);
       break;
     case 0xF2:
       JPa16();
