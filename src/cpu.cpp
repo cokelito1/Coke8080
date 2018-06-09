@@ -29,6 +29,8 @@ cpu::cpu() {
   mainBank.PC.word = 0x00;
 
   cycles = 0;
+
+  stack = new vector<uint8_t>(0xFFFF);
 }
 
 cpu::cpu(int32_t cycles) {
@@ -45,6 +47,38 @@ cpu::~cpu() { }
 
 int32_t cpu::getCycles() {
   return cycles;
+}
+
+bool cpu::getCarry() {
+  return mainBank.AF.bytes.low & FLAG_CARRY;
+}
+
+bool cpu::get2() {
+  return (mainBank.AF.bytes.low & FLAG_2) >> 1;
+}
+
+bool cpu::getParity() {
+  return (mainBank.AF.bytes.low & FLAG_PARITY) >> 2;
+}
+
+bool cpu::get4() {
+  return (mainBank.AF.bytes.low & FLAG_4) >> 3;
+}
+
+bool cpu::getAux() {
+  return (mainBank.AF.bytes.low & FLAG_AUX) >> 4;
+}
+
+bool cpu::get6()  {
+  return (mainBank.AF.bytes.low & FLAG_6) >>  5;
+}
+
+bool cpu::getZero() {
+  return (mainBank.AF.bytes.low & FLAG_ZERO) >> 6;
+}
+
+bool cpu::getSign() {
+  return (mainBank.AF.bytes.low & FLAG_SIGN) >> 7;
 }
 
 void cpu::cycle() {
@@ -131,6 +165,58 @@ void cpu::cycle() {
       MOV(mainBank.BC.bytes.low, mainBank.AF.bytes.high);
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, A" << endl;
       break;
+    case 0x50:
+      MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, B" << endl;
+      break;
+    case 0x51:
+      MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.low);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, C" << endl;
+      break;
+    case 0x52:
+      MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, D" << endl;
+      break;
+    case 0x53:
+      MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.low);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, E" << endl;
+      break;
+    case 0x54:
+      MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, H" << endl;
+      break;
+    case 0x55:
+      MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.low);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, L" << endl;
+      break;
+    case 0x56:
+      MOV(mainBank.DE.bytes.high, mem->readMemory(mainBank.HL.word));
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, (HL)" << endl;
+      break;
+    case 0x57:
+      MOV(mainBank.DE.bytes.high, mainBank.AF.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, A" << endl;
+      break;
+    case 0x58:
+      MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.high);
+      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV E, B" << endl;
+      break; 
+    case 0x59:
+      MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
+    case 0x5A:
+      MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.high);
+    case 0x5B:
+      MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.low);
+    case 0x5C:
+      MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.high);
+    case 0x5D:
+      MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.low);
+    case 0x5E:
+      MOV(mainBank.DE.bytes.low, mem->readMemory(mainBank.HL.word));
+    case 0x5F:
+      MOV(mainBank.DE.bytes.low, mainBank.AF.bytes.high);
+    case 0x60:
+
     case 0xF2:
       JPa16();
       break;

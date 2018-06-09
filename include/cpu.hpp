@@ -34,6 +34,17 @@ typedef union {
   uint16_t word;
 } registers_t;
 
+enum FLAGS {
+  FLAG_CARRY  = 0x01,
+  FLAG_2      = 0x02,
+  FLAG_PARITY = 0x04,
+  FLAG_4      = 0x08,
+  FLAG_AUX    = 0x10,
+  FLAG_6      = 0x20,
+  FLAG_ZERO   = 0x40,
+  FLAG_SIGN   = 0x80,
+};
+
 typedef struct {
   registers_t AF;
   registers_t BC;
@@ -64,7 +75,17 @@ private:
 
   void MOV(uint8_t &dst, uint8_t src);
 
+  bool getCarry();
+  bool get2();
+  bool getParity();
+  bool get4();
+  bool getAux();
+  bool get6();
+  bool getZero();
+  bool getSign();
+
   memory<uint8_t> *mem = nullptr;
+  memory<uint8_t> stack = nullptr;
 };
 
 #endif //_CPU_HPP_
