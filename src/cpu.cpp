@@ -28,7 +28,7 @@ cpu::cpu() {
   mainBank.SP.word = 0x00;
   mainBank.PC.word = 0x00;
 
-  cycles = 0; 
+  cycles = 0;
 }
 
 cpu::cpu(int32_t cycles) {
@@ -91,8 +91,52 @@ void cpu::cycle() {
     case 0x00:
       NOP();
       break;
+    case 0x01:
+      LXI(mainBank.BC.word);
+      break;
+    case 0x02:
+      STAX(mainBank.BC.word);
+      break;
+    case 0x03:
+      INX(mainBank.BC.word);
+      break;
+    case 0x06:
+      MVI(mainBank.BC.bytes.high);
+      break;
+    case 0x08:
+      NOP();
+      break;
+    case 0x0A:
+      LDAX(mainBank.BC.word);
+    case 0x0B:
+      DCX(mainBank.BC.word);
+      break;
+    case 0x0E:
+      MVI(mainBank.BC.bytes.low);
+      break;
     case 0x10:
       NOP();
+      break;
+    case 0x11:
+      LXI(mainBank.DE.word);
+      break;
+    case 0x12:
+      STAX(mainBank.DE.word);
+      break;
+    case 0x13:
+      INX(mainBank.DE.word);
+      break;
+    case 0x16:
+      MVI(mainBank.DE.bytes.high);
+      break;
+    case 0x18:
+      NOP();
+      break;
+    case 0x1A:
+      LDAX(mainBank.DE.word);
+      break;
+    case 0x1B:
+      DCX(mainBank.DE.word);
       break;
     case 0x20:
       NOP();
@@ -201,7 +245,7 @@ void cpu::cycle() {
     case 0x58:
       MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.high);
       cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV E, B" << endl;
-      break; 
+      break;
     case 0x59:
       MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
       break;
@@ -233,7 +277,7 @@ void cpu::cycle() {
     case 0x62:
       MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.high);
       break;
-    case 0x63: 
+    case 0x63:
       MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.low);
       break;
     case 0x64:
@@ -375,6 +419,55 @@ void cpu::MOVToMemory(uint16_t addr, uint8_t src) {
 
 void cpu::HLT() {
   exit(0);
+}
+
+void cpu::LXI(uint16_t &reg) {
+  cycles -= 10;
+  mainBank.PC.word++;
+
+  uint16_t val = mem->readMemory(mainBank.PC.word);
+  mainBank.PC.word++;
+
+  val |= (mem->readMemory(mainBank.PC.word) << 8);
+  mainBank.PC.word++;
+
+  reg = val;
+}
+
+void cpu::STAX(uint16_t addr) {
+  cycles -= 7;
+  mainBank.PC.word++;
+
+  mem->writeMemory(mainBank.AF.bytes.high, addr);
+}
+
+void cpu::INX(uint16_t &reg) {
+  cycles -= 5;
+  mainBank.PC.word++;
+
+  reg++;
+}
+
+void cpu::MVI(uint8_t &reg) {
+    cycles -= 7;
+    mainBank.PC.word++;
+
+    reg = mem->readMemory(mainBank.PC.word);
+    mainBank.PC.word++;
+}
+
+void cpu::LDAX(uint16_t addr) {
+  cycles -= 7;
+  mainBank.PC.word++;
+
+  mainBank.AF.bytes.high = mem->readMemory(addr);
+}
+
+void cpu::DCX(uint16_t &reg) {
+  cycles -= 5;
+  mainBank.PC.word++;
+
+  reg--;
 }
 
 bank_t cpu::getMainBank() {

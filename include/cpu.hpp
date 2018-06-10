@@ -73,6 +73,12 @@ private:
   void NOP();   //0x00, 0x10, 0x20, 0x30
   void HLT();
   void JPa16(); //0xF2
+  void LXI(uint16_t &reg);
+  void STAX(uint16_t addr);
+  void INX(uint16_t &reg);
+  void MVI(uint8_t &reg);
+  void LDAX(uint16_t addr);
+  void DCX(uint16_t &reg);
   void MOVToMemory(uint16_t addr, uint8_t src);
 
   void MOV(uint8_t &dst, uint8_t src);
