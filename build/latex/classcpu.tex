@@ -1,0 +1,170 @@
+\hypertarget{classcpu}{}\section{cpu Class Reference}
+\label{classcpu}\index{cpu@{cpu}}
+
+
+the purpose of cpu class is to emulate the opcodes of the 8080  
+
+
+
+
+{\ttfamily \#include $<$cpu.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpu_a22c701a37704bc8f4e255e6d3e336346}{cpu} ()
+\begin{DoxyCompactList}\small\item\em cpu constructor \end{DoxyCompactList}\item 
+\hyperlink{classcpu_ac872bcc84e0263dc6367691f75387580}{cpu} (int32\+\_\+t cycles)
+\begin{DoxyCompactList}\small\item\em cpu constructor \end{DoxyCompactList}\item 
+\hyperlink{classcpu_ac86c29fa51a1845f17080b27308ee80d}{$\sim$cpu} ()
+\begin{DoxyCompactList}\small\item\em cpu destructor \end{DoxyCompactList}\item 
+int32\+\_\+t \hyperlink{classcpu_a682eae4bdd78dd195444d88d71104d45}{get\+Cycles} ()
+\begin{DoxyCompactList}\small\item\em get cycles variable from the object \end{DoxyCompactList}\item 
+void \hyperlink{classcpu_a83c8f2610d7309fe67b84f9c1335bdf3}{cycle} ()
+\begin{DoxyCompactList}\small\item\em cycle one instruction in the cpu \end{DoxyCompactList}\item 
+void \hyperlink{classcpu_ac5f2ce2e48d25be7d4a7a32259b26241}{set\+Mem\+Instance} (\hyperlink{classmemory}{memory}$<$ uint8\+\_\+t $>$ $\ast$instance)
+\begin{DoxyCompactList}\small\item\em give an instance of memory object to the cpu \end{DoxyCompactList}\item 
+\hyperlink{structbank__t}{bank\+\_\+t} \hyperlink{classcpu_a7f3f1db27b1d64462874595fa246db4c}{get\+Main\+Bank} ()
+\begin{DoxyCompactList}\small\item\em get main\+Bank, main purpose to use write\+Registers\+To\+File on machine \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+the purpose of cpu class is to emulate the opcodes of the 8080 
+
+This class is the main class of all the project, it\textquotesingle{}s importance is to emulate all the 8080 opcodes and, set a clean interface to interact.
+
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{cpu@{cpu}!cpu@{cpu}}
+\index{cpu@{cpu}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{cpu()}{cpu()}}]{\setlength{\rightskip}{0pt plus 5cm}cpu\+::cpu (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_a22c701a37704bc8f4e255e6d3e336346}{}\label{classcpu_a22c701a37704bc8f4e255e6d3e336346}
+
+
+cpu constructor 
+
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+\index{cpu@{cpu}!cpu@{cpu}}
+\index{cpu@{cpu}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{cpu(int32\+\_\+t cycles)}{cpu(int32_t cycles)}}]{\setlength{\rightskip}{0pt plus 5cm}cpu\+::cpu (
+\begin{DoxyParamCaption}
+\item[{int32\+\_\+t}]{cycles}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_ac872bcc84e0263dc6367691f75387580}{}\label{classcpu_ac872bcc84e0263dc6367691f75387580}
+
+
+cpu constructor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cycles} & is a int32\+\_\+t var to store the cycles \\
+\hline
+\end{DoxyParams}
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+\index{cpu@{cpu}!````~cpu@{$\sim$cpu}}
+\index{````~cpu@{$\sim$cpu}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{$\sim$cpu()}{~cpu()}}]{\setlength{\rightskip}{0pt plus 5cm}cpu\+::$\sim$cpu (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_ac86c29fa51a1845f17080b27308ee80d}{}\label{classcpu_ac86c29fa51a1845f17080b27308ee80d}
+
+
+cpu destructor 
+
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+
+
+\subsection{Member Function Documentation}
+\index{cpu@{cpu}!cycle@{cycle}}
+\index{cycle@{cycle}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{cycle()}{cycle()}}]{\setlength{\rightskip}{0pt plus 5cm}void cpu\+::cycle (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_a83c8f2610d7309fe67b84f9c1335bdf3}{}\label{classcpu_a83c8f2610d7309fe67b84f9c1335bdf3}
+
+
+cycle one instruction in the cpu 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+\index{cpu@{cpu}!get\+Cycles@{get\+Cycles}}
+\index{get\+Cycles@{get\+Cycles}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{get\+Cycles()}{getCycles()}}]{\setlength{\rightskip}{0pt plus 5cm}int32\+\_\+t cpu\+::get\+Cycles (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_a682eae4bdd78dd195444d88d71104d45}{}\label{classcpu_a682eae4bdd78dd195444d88d71104d45}
+
+
+get cycles variable from the object 
+
+\begin{DoxyReturn}{Returns}
+int32\+\_\+t cycles 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+\index{cpu@{cpu}!get\+Main\+Bank@{get\+Main\+Bank}}
+\index{get\+Main\+Bank@{get\+Main\+Bank}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{get\+Main\+Bank()}{getMainBank()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf bank\+\_\+t} cpu\+::get\+Main\+Bank (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_a7f3f1db27b1d64462874595fa246db4c}{}\label{classcpu_a7f3f1db27b1d64462874595fa246db4c}
+
+
+get main\+Bank, main purpose to use write\+Registers\+To\+File on machine 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{structbank__t}{bank\+\_\+t} 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+\index{cpu@{cpu}!set\+Mem\+Instance@{set\+Mem\+Instance}}
+\index{set\+Mem\+Instance@{set\+Mem\+Instance}!cpu@{cpu}}
+\subsubsection[{\texorpdfstring{set\+Mem\+Instance(memory$<$ uint8\+\_\+t $>$ $\ast$instance)}{setMemInstance(memory< uint8_t > *instance)}}]{\setlength{\rightskip}{0pt plus 5cm}void cpu\+::set\+Mem\+Instance (
+\begin{DoxyParamCaption}
+\item[{{\bf memory}$<$ uint8\+\_\+t $>$ $\ast$}]{instance}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpu_ac5f2ce2e48d25be7d4a7a32259b26241}{}\label{classcpu_ac5f2ce2e48d25be7d4a7a32259b26241}
+
+
+give an instance of memory object to the cpu 
+
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & is a pointer to the memory object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{cpu_8hpp}{cpu.\+hpp}\item 
+src/cpu.\+cpp\end{DoxyCompactItemize}

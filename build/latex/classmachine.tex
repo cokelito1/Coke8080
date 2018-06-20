@@ -1,0 +1,142 @@
+\hypertarget{classmachine}{}\section{machine Class Reference}
+\label{classmachine}\index{machine@{machine}}
+
+
+Serve as a frontend for the emulator implements I/O.  
+
+
+
+
+{\ttfamily \#include $<$machine.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classmachine_aeeec630a2d822024410a93836835e305}{machine} ()\hypertarget{classmachine_aeeec630a2d822024410a93836835e305}{}\label{classmachine_aeeec630a2d822024410a93836835e305}
+
+\begin{DoxyCompactList}\small\item\em Constructor of machine object. \end{DoxyCompactList}\item 
+\hyperlink{classmachine_a128a1ae7e488b0f02073379bc7502913}{machine} (bool logging, std\+::string log\+File)
+\begin{DoxyCompactList}\small\item\em Constructor of machine object. \end{DoxyCompactList}\item 
+\hyperlink{classmachine_a0e7c71cf31b616c8017ad968edd61414}{$\sim$machine} ()\hypertarget{classmachine_a0e7c71cf31b616c8017ad968edd61414}{}\label{classmachine_a0e7c71cf31b616c8017ad968edd61414}
+
+\begin{DoxyCompactList}\small\item\em Destructor of the machine object. \end{DoxyCompactList}\item 
+bool \hyperlink{classmachine_ac9e718bc1fab3de88185dc2a82af84c3}{load\+Rom} (std\+::string file\+Path)
+\begin{DoxyCompactList}\small\item\em Loads a binary file to the emulator memory. \end{DoxyCompactList}\item 
+void \hyperlink{classmachine_a07bad454d011757513fdf02188569724}{start\+Emu} ()
+\begin{DoxyCompactList}\small\item\em Main loop of the emulator. \end{DoxyCompactList}\item 
+void \hyperlink{classmachine_a5f5d618e02d77f66ec6e402c60fbc867}{write\+Registers\+To\+File} (std\+::string file\+Path)
+\begin{DoxyCompactList}\small\item\em Debug function to write all the registers to a file. \end{DoxyCompactList}\item 
+void \hyperlink{classmachine_ae73693bba05600283dc66895e2c8420d}{set\+Log\+File} (std\+::string log\+File)
+\begin{DoxyCompactList}\small\item\em Set a new value to the log\+File variable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Serve as a frontend for the emulator implements I/O. 
+
+This class has the purpose of connect all the classes and implement the graphics and I/O
+
+\begin{DoxyAuthor}{Author}
+Jorge Bravo 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{machine@{machine}!machine@{machine}}
+\index{machine@{machine}!machine@{machine}}
+\subsubsection[{\texorpdfstring{machine(bool logging, std\+::string log\+File)}{machine(bool logging, std::string logFile)}}]{\setlength{\rightskip}{0pt plus 5cm}machine\+::machine (
+\begin{DoxyParamCaption}
+\item[{bool}]{logging, }
+\item[{std\+::string}]{log\+File}
+\end{DoxyParamCaption}
+)}\hypertarget{classmachine_a128a1ae7e488b0f02073379bc7502913}{}\label{classmachine_a128a1ae7e488b0f02073379bc7502913}
+
+
+Constructor of machine object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em logging} & is a boolean that enables/disables logging to a file \\
+\hline
+{\em log\+File} & is a string to the path of the log file \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\index{machine@{machine}!load\+Rom@{load\+Rom}}
+\index{load\+Rom@{load\+Rom}!machine@{machine}}
+\subsubsection[{\texorpdfstring{load\+Rom(std\+::string file\+Path)}{loadRom(std::string filePath)}}]{\setlength{\rightskip}{0pt plus 5cm}bool machine\+::load\+Rom (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{file\+Path}
+\end{DoxyParamCaption}
+)}\hypertarget{classmachine_ac9e718bc1fab3de88185dc2a82af84c3}{}\label{classmachine_ac9e718bc1fab3de88185dc2a82af84c3}
+
+
+Loads a binary file to the emulator memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & is a string to the path of the rom \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+false on fail and true on success 
+\end{DoxyReturn}
+\index{machine@{machine}!set\+Log\+File@{set\+Log\+File}}
+\index{set\+Log\+File@{set\+Log\+File}!machine@{machine}}
+\subsubsection[{\texorpdfstring{set\+Log\+File(std\+::string log\+File)}{setLogFile(std::string logFile)}}]{\setlength{\rightskip}{0pt plus 5cm}void machine\+::set\+Log\+File (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{log\+File}
+\end{DoxyParamCaption}
+)}\hypertarget{classmachine_ae73693bba05600283dc66895e2c8420d}{}\label{classmachine_ae73693bba05600283dc66895e2c8420d}
+
+
+Set a new value to the log\+File variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em log\+File} & string of the new value for log\+File \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{machine@{machine}!start\+Emu@{start\+Emu}}
+\index{start\+Emu@{start\+Emu}!machine@{machine}}
+\subsubsection[{\texorpdfstring{start\+Emu()}{startEmu()}}]{\setlength{\rightskip}{0pt plus 5cm}void machine\+::start\+Emu (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classmachine_a07bad454d011757513fdf02188569724}{}\label{classmachine_a07bad454d011757513fdf02188569724}
+
+
+Main loop of the emulator. 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{machine@{machine}!write\+Registers\+To\+File@{write\+Registers\+To\+File}}
+\index{write\+Registers\+To\+File@{write\+Registers\+To\+File}!machine@{machine}}
+\subsubsection[{\texorpdfstring{write\+Registers\+To\+File(std\+::string file\+Path)}{writeRegistersToFile(std::string filePath)}}]{\setlength{\rightskip}{0pt plus 5cm}void machine\+::write\+Registers\+To\+File (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{file\+Path}
+\end{DoxyParamCaption}
+)}\hypertarget{classmachine_a5f5d618e02d77f66ec6e402c60fbc867}{}\label{classmachine_a5f5d618e02d77f66ec6e402c60fbc867}
+
+
+Debug function to write all the registers to a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & string to the path of the logging file, normally log\+File var \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{machine_8hpp}{machine.\+hpp}\item 
+src/machine.\+cpp\end{DoxyCompactItemize}

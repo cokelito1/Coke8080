@@ -20,51 +20,131 @@ This program is free software: you can redistribute it and/or modify
 
 #include "memory.hpp"
 
+/**
+* @file     cpu.hpp
+* @author   Jorge Bravo (cokelito1)
+* @date     20/6/2018
+* @version  1.0
+*
+* @brief Implements the 8080 to use on machine
+*
+* This archive purpose is to declare all the
+* cpu data types and the cpu class itself
+*/
+
+/**
+* @brief union to access low and high bytes of a register
+*
+* @author Jorge Bravo
+*/
 typedef union {
   struct {
     #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-      uint8_t low;
-      uint8_t high;
+      uint8_t low;  ///< Low byte of the register
+      uint8_t high; ///< High byte of the register
     #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-      uint8_t high;
-      uint8_t low;
+      uint8_t high; ///< High byte of the register
+      uint8_t low;  ///< Low byte of the register
     #endif
   }bytes;
 
-  uint16_t word;
+  uint16_t word;  ///< Register 16 bits value
 } registers_t;
 
+/**
+* @brief enum taht declares the mask to access a flag
+*
+* @author Jorge Bravo
+*/
 enum FLAGS {
-  FLAG_CARRY  = 0x01,
-  FLAG_2      = 0x02,
-  FLAG_PARITY = 0x04,
-  FLAG_4      = 0x08,
-  FLAG_AUX    = 0x10,
-  FLAG_6      = 0x20,
-  FLAG_ZERO   = 0x40,
-  FLAG_SIGN   = 0x80,
+  FLAG_CARRY  = 0x01, ///<  Mask for Carry flag
+  FLAG_2      = 0x02, ///<  Mask for Second flag
+  FLAG_PARITY = 0x04, ///<  Mask for Parity flag
+  FLAG_4      = 0x08, ///<  Mask for 4 flag
+  FLAG_AUX    = 0x10, ///<  Mask for Auxiliary flag
+  FLAG_6      = 0x20, ///<  Mask for 6 flag
+  FLAG_ZERO   = 0x40, ///<  Mask for Zero flag
+  FLAG_SIGN   = 0x80, ///<  Mask for Sign Flag
 };
 
+/**
+* @brief struct that represents a bank of register for the cpu
+*
+* @author Jorge Bravo
+*/
 typedef struct {
-  registers_t AF;
-  registers_t BC;
-  registers_t DE;
-  registers_t HL;
-  registers_t SP;
-  registers_t PC;
+  registers_t AF; ///<  Accumulator and Flags register
+  registers_t BC; ///<  BC register
+  registers_t DE; ///<  DE register
+  registers_t HL; ///<  HL register
+  registers_t SP; ///<  Stack Pointer register
+  registers_t PC; ///<  Program Counter register
 } bank_t;
 
+/**
+* @brief the purpose of cpu class is to emulate the opcodes of the 8080
+*
+* This class is the main class of all the project, it's
+* importance is to emulate all the 8080 opcodes and,
+* set a clean interface to interact.
+*
+* @author Jorge Bravo
+*/
 class cpu {
 public:
+  /**
+  * @brief cpu constructor
+  *
+  * @author Jorge Bravo
+  */
   cpu();
+
+  /**
+  * @brief cpu constructor
+  *
+  * @param cycles is a int32_t var to store the cycles
+  * @author Jorge Bravo
+  */
   cpu(int32_t cycles);
+
+  /**
+  * @brief cpu destructor
+  *
+  * @author Jorge Bravo
+  */
   ~cpu();
 
+  /**
+  * @brief get cycles variable from the object
+  *
+  * @return int32_t cycles
+  * @author Jorge Bravo
+  */
   int32_t getCycles();
 
+  /**
+  * @brief cycle one instruction in the cpu
+  *
+  * @return void
+  * @author Jorge Bravo
+  */
   void cycle();
+
+  /**
+  * @brief give an instance of memory object to the cpu
+  *
+  * @param instance is a pointer to the memory object
+  * @return void
+  * @author Jorge Bravo
+  */
   void setMemInstance(memory<uint8_t> *instance);
 
+  /**
+  * @brief get mainBank, main purpose to use writeRegistersToFile on machine
+  *
+  * @return bank_t
+  * @author Jorge Bravo
+  */
   bank_t getMainBank();
 private:
   int32_t cycles;
@@ -80,6 +160,7 @@ private:
   void LDAX(uint16_t addr);
   void DCX(uint16_t &reg);
   void MOVToMemory(uint16_t addr, uint8_t src);
+  void SHLD();
 
   void MOV(uint8_t &dst, uint8_t src);
 

@@ -19,9 +19,18 @@ This program is free software: you can redistribute it and/or modify
 #include "machine.hpp"
 
 machine::machine() {
-  chip = new cpu(200);
+  chip = new cpu(2000000);
   mem = new memory<uint8_t>(0x10000);
-  chip->setMemInstance(mem); 
+  logging = false;
+  chip->setMemInstance(mem);
+}
+
+machine::machine(bool logging, std::string logFile) {
+  chip = new cpu(2000000);
+  mem = new memory<uint8_t>(0x10000);
+  this->logging = logging;
+  this->logFile = logFile;
+  chip->setMemInstance(mem);
 }
 
 machine::~machine() {
@@ -56,7 +65,9 @@ bool machine::loadRom(std::string filePath) {
 void machine::startEmu() {
   while(chip->getCycles() > 0){
     chip->cycle();
-    writeRegistersToFile(logFile);
+    if(logging) {
+      writeRegistersToFile(logFile);
+    }
   }
 }
 

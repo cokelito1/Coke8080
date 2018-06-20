@@ -138,113 +138,98 @@ void cpu::cycle() {
     case 0x1B:
       DCX(mainBank.DE.word);
       break;
+    case 0x1E:
+      MVI(mainBank.BC.bytes.low);
+      break;
     case 0x20:
       NOP();
+      break;
+    case 0x21:
+      LXI(mainBank.HL.word);
+      break;
+    case 0x23:
+      SHLD();
       break;
     case 0x30:
       NOP();
       break;
     case 0x40:
       MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, B" << endl;
       break;
     case 0x41:
       MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, C" << endl;
       break;
     case 0x42:
       MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, D" << endl;
       break;
     case 0x43:
       MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, E" << endl;
       break;
     case 0x44:
       MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, H" << endl;
       break;
     case 0x45:
       MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, L" << endl;
       break;
     case 0x46:
       MOV(mainBank.BC.bytes.high, mem->readMemory(mainBank.HL.word));
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, (HL)" << endl;
       cycles -= 2;
       break;
     case 0x47:
       MOV(mainBank.BC.bytes.high, mainBank.AF.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV B, A" << endl;
       break;
     case 0x48:
       MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, B" << endl;
       break;
     case 0x49:
       MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, C" << endl;
       break;
     case 0x4A:
       MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, D" << endl;
       break;
     case 0x4B:
       MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, E" << endl;
+      break;
     case 0x4C:
       MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, H" << endl;
       break;
     case 0x4D:
       MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, L" << endl;
       break;
     case 0x4E:
       MOV(mainBank.BC.bytes.low, mem->readMemory(mainBank.HL.word));
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, (HL)" << endl;
       cycles -= 2;
       break;
     case 0x4F:
       MOV(mainBank.BC.bytes.low, mainBank.AF.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV C, A" << endl;
       break;
     case 0x50:
       MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, B" << endl;
       break;
     case 0x51:
       MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, C" << endl;
       break;
     case 0x52:
       MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, D" << endl;
       break;
     case 0x53:
       MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, E" << endl;
       break;
     case 0x54:
       MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, H" << endl;
       break;
     case 0x55:
       MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.low);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, L" << endl;
       break;
     case 0x56:
       MOV(mainBank.DE.bytes.high, mem->readMemory(mainBank.HL.word));
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, (HL)" << endl;
       cycles -= 2;
       break;
     case 0x57:
       MOV(mainBank.DE.bytes.high, mainBank.AF.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV D, A" << endl;
       break;
     case 0x58:
       MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.high);
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "MOV E, B" << endl;
       break;
     case 0x59:
       MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
@@ -398,7 +383,7 @@ void cpu::JPa16() {
   addrJump |= (mem->readMemory(mainBank.PC.word) << 8);
   mainBank.PC.word++;
 
-  cout << "0x" << setfill('0') << setw(4) << hex << uppercase << (mainBank.PC.word - 0x03) << ": " << "JP 0x" << setfill('0') << setw(4) << addrJump << endl;
+//  cout << "0x" << setfill('0') << setw(4) << hex << uppercase << (mainBank.PC.word - 0x03) << ": " << "JP 0x" << setfill('0') << setw(4) << addrJump << endl;
 
   mainBank.PC.word = addrJump;
 }
@@ -468,6 +453,21 @@ void cpu::DCX(uint16_t &reg) {
   mainBank.PC.word++;
 
   reg--;
+}
+
+void cpu::SHLD() {
+  cycles -= 16;
+  mainBank.PC.word++;
+
+  registers_t val;
+  val.word = mem->readMemory(mainBank.PC.word);
+  mainBank.PC.word++;
+
+  val.word |= (mem->readMemory(mainBank.PC.word) << 8);
+  mainBank.PC.word++;
+
+  mem->writeMemory(mainBank.HL.bytes.low, val.bytes.low);
+  mem->writeMemory(mainBank.HL.bytes.high, val.bytes.high);
 }
 
 bank_t cpu::getMainBank() {

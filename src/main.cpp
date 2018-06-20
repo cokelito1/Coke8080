@@ -21,17 +21,24 @@ int main(int argc, char *argv[])
 {
   std::cout << "Coke8080 ver 0.01" << std::endl;
 
-  if(argc < 3) {
+  if(argc < 2) {
     std::cout << "Usage: " << argv[0] << " <rom.bin> <registers.log>" << std::endl;
     return -1;
   }
 
-  std::cout << "Partiendo maquina 1" << std::endl;
-  machine *maquina = new machine();
-  maquina->loadRom(argv[1]);
-  maquina->setLogFile(argv[2]);
-  maquina->startEmu();
-  delete maquina;
+  if(argc == 2) {
+    std::cout << "Partiendo maquina 1" << std::endl;
+    machine *maquina = new machine();
+    maquina->loadRom(argv[1]);
+    maquina->startEmu();
+    delete maquina;
+  } else if(argc == 3) {
+    std::cout << "Partiendo maquina 1" << std::endl;
+    machine *maquina = new machine(true, argv[2]);
+    maquina->loadRom(argv[1]);
+    maquina->startEmu();
+    delete maquina;
+  }
 
   return 0;
 }

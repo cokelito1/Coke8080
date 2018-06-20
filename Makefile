@@ -1,6 +1,6 @@
 CC=g++
 CXXFLAGS=	-Wall					\
-			-O2						\
+			-O3								\
 			-I include				\
 			-std=c++11				\
 			-c
@@ -14,7 +14,7 @@ OBJ =	$(BUILDDIR)/cpu.o				\
 all: checkdirs main
 
 main:	$(OBJ)
-	$(CC) $(OBJ) -o main.elf
+	$(CC) $(OBJ) -o main.elf -lpthread
 
 checkdirs: $(BUILDDIR)
 
