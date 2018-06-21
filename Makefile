@@ -4,17 +4,21 @@ CXXFLAGS=	-Wall					\
 			-I include				\
 			-std=c++11				\
 			-c
-VPATH=src
+
+VPATH=src test
 BUILDDIR=build
 
 OBJ =	$(BUILDDIR)/cpu.o				\
 			$(BUILDDIR)/machine.o		\
 			$(BUILDDIR)/main.o
 
+TEST_OBJ = $(BUILDDIR)/endianness.o
+
 all: checkdirs main
 
-main:	$(OBJ)
-	$(CC) $(OBJ) -o main.elf -lpthread
+main:	$(OBJ) $(TEST_OBJ)
+	$(CC) $(OBJ) -o main.elf
+	$(CC) $(TEST_OBJ) -o endiannes_test
 
 checkdirs: $(BUILDDIR)
 
@@ -25,4 +29,4 @@ $(BUILDDIR)/%.o: %.cpp
 	$(CC) $(CXXFLAGS) $< -o $@
 
 clean:
-	rm -fr build main *.log
+	rm -fr build main.elf endiannes_test *.log
