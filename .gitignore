@@ -33,3 +33,5 @@
 *.elf
 
 .vscode
+
+build/
