@@ -1,6 +1,6 @@
 project(Coke8080)
 cmake_minimum_required(VERSION 2.8.12)
-add_definitions("-std=c++17")
+add_definitions("-std=c++14")
 file(GLOB_RECURSE Source src/*.cpp)
 
 include_directories("include/")
