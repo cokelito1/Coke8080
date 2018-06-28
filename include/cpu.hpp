@@ -17,6 +17,7 @@ This program is free software: you can redistribute it and/or modify
 #define _CPU_HPP_
 
 #include <cstdint>
+#include <functional>
 
 #include "memory.hpp"
 
@@ -92,6 +93,8 @@ typedef struct {
 */
 class cpu {
 public:
+  typedef void (cpu::*Opcodefunc)();
+
   /**
   * @brief cpu constructor
   *
@@ -150,6 +153,8 @@ private:
   int32_t cycles;
   bank_t mainBank;
 
+  void insertOpcode(Opcodefunc function, uint16_t opcodeValue);
+
   void NOP();   //0x00, 0x10, 0x20, 0x30
   void HLT();
   void JPa16(); //0xF2
@@ -161,6 +166,27 @@ private:
   void DCX(uint16_t &reg);
   void MOVToMemory(uint16_t addr, uint8_t src);
   void SHLD();
+
+  //LXI Zone
+  void LXIBC();
+
+  //Stax Zone
+  void STAXBC();
+
+  //INX Zone
+  void INXBC();
+
+  //MVI Zone
+  void MVIB();
+  void MVIC();
+
+  //LDAX Zone
+  void LDAXBC();
+
+  //DCX Zone
+  void DCXBC();
+
+  Opcodefunc op[0x10000];
 
   void MOV(uint8_t &dst, uint8_t src);
 

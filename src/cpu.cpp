@@ -28,16 +28,25 @@ cpu::cpu() {
   mainBank.SP.word = 0x00;
   mainBank.PC.word = 0x00;
 
+  insertOpcode(&cpu::NOP, 0x00);
+  insertOpcode(&cpu::LXIBC, 0x01);
+  insertOpcode(&cpu::STAXBC, 0x02);
+  insertOpcode(&cpu::INXBC, 0x03);
+  //0x04-0x05
+  insertOpcode(&cpu::MVIB, 0x06);
+  //0x07
+  insertOpcode(&cpu::NOP, 0x08);
+  //0x09
+  insertOpcode(&cpu::LDAXBC, 0x0A);
+  insertOpcode(&cpu::DCXBC, 0x0B);
+  //0x0C-0x0D
+  insertOpcode(&cpu::MVIC, 0x0E);
+  //0x0F
+  insertOpcode(&cpu::NOP, 0x10);
   cycles = 0;
 }
 
-cpu::cpu(int32_t cycles) {
-  mainBank.AF.word = 0x00;
-  mainBank.BC.word = 0x00;
-  mainBank.DE.word = 0x00;
-  mainBank.HL.word = 0x00;
-  mainBank.SP.word = 0x00;
-  mainBank.PC.word = 0x00;
+cpu::cpu(int32_t cycles) : cpu(){
   this->cycles = cycles;
 }
 
@@ -46,6 +55,7 @@ cpu::~cpu() {   }
 int32_t cpu::getCycles() {
   return cycles;
 }
+
 
 bool cpu::getCarry() {
   return mainBank.AF.bytes.low & FLAG_CARRY;
@@ -88,32 +98,6 @@ void cpu::cycle() {
   uint8_t opcode = mem->readMemory(mainBank.PC.word);
 
   switch(opcode) {
-    case 0x00:
-      NOP();
-      break;
-    case 0x01:
-      LXI(mainBank.BC.word);
-      break;
-    case 0x02:
-      STAX(mainBank.BC.word);
-      break;
-    case 0x03:
-      INX(mainBank.BC.word);
-      break;
-    case 0x06:
-      MVI(mainBank.BC.bytes.high);
-      break;
-    case 0x08:
-      NOP();
-      break;
-    case 0x0A:
-      LDAX(mainBank.BC.word);
-    case 0x0B:
-      DCX(mainBank.BC.word);
-      break;
-    case 0x0E:
-      MVI(mainBank.BC.bytes.low);
-      break;
     case 0x10:
       NOP();
       break;
@@ -362,6 +346,10 @@ void cpu::cycle() {
   }
 }
 
+void cpu::insertOpcode(Opcodefunc function, uint16_t opcodeValue) {
+  op[opcodeValue] = function;
+}
+
 void cpu::setMemInstance(memory<uint8_t> *instance) {
   mem = instance;
 }
@@ -406,6 +394,7 @@ void cpu::HLT() {
   exit(0);
 }
 
+//LXI Zone
 void cpu::LXI(uint16_t &reg) {
   cycles -= 10;
   mainBank.PC.word++;
@@ -419,6 +408,11 @@ void cpu::LXI(uint16_t &reg) {
   reg = val;
 }
 
+void cpu::LXIBC() {
+  LXI(mainBank.BC.word);
+}
+
+//STAX Zone
 void cpu::STAX(uint16_t addr) {
   cycles -= 7;
   mainBank.PC.word++;
@@ -426,6 +420,11 @@ void cpu::STAX(uint16_t addr) {
   mem->writeMemory(mainBank.AF.bytes.high, addr);
 }
 
+void cpu::STAXBC() {
+  STAX(mainBank.BC.word);
+}
+
+//INX Zone
 void cpu::INX(uint16_t &reg) {
   cycles -= 5;
   mainBank.PC.word++;
@@ -433,6 +432,11 @@ void cpu::INX(uint16_t &reg) {
   reg++;
 }
 
+void cpu::INXBC() {
+  INX(mainBank.BC.word);
+}
+
+//MVI Zone
 void cpu::MVI(uint8_t &reg) {
     cycles -= 7;
     mainBank.PC.word++;
@@ -441,6 +445,15 @@ void cpu::MVI(uint8_t &reg) {
     mainBank.PC.word++;
 }
 
+void cpu::MVIB() {
+  MVI(mainBank.BC.bytes.high);
+}
+
+void cpu::MVIC() {
+  MVI(mainBank.BC.bytes.low);
+}
+
+//LDAX Zone
 void cpu::LDAX(uint16_t addr) {
   cycles -= 7;
   mainBank.PC.word++;
@@ -448,11 +461,20 @@ void cpu::LDAX(uint16_t addr) {
   mainBank.AF.bytes.high = mem->readMemory(addr);
 }
 
+void cpu::LDAXBC() {
+  LDAX(mainBank.BC.word);
+}
+
+//DCX Zone
 void cpu::DCX(uint16_t &reg) {
   cycles -= 5;
   mainBank.PC.word++;
 
   reg--;
+}
+
+void cpu::DCXBC() {
+  DCX(mainBank.BC.word);
 }
 
 void cpu::SHLD() {
