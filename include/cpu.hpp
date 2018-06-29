@@ -164,6 +164,8 @@ private:
   void MVI(uint8_t &reg);
   void LDAX(uint16_t addr);
   void DCX(uint16_t &reg);
+  void RET();
+  void XCHG();
   void SHLD();
 
   //MOVToMemory Zone
@@ -180,6 +182,7 @@ private:
   void LXIBC();
   void LXIDE();
   void LXIHL();
+  void LXISP();
 
   //Stax Zone
   void STAXBC();
@@ -202,6 +205,17 @@ private:
   //DCX Zone
   void DCXBC();
   void DCXDE();
+
+  //R Zone
+  void RCond(uint8_t flag);
+  void RNZ();
+  void RZ();
+  void RNC();
+  void RC();
+  void RPO();
+  void RPE();
+  void RP();
+  void RM();
 
   //MOV Zone
   void MOV(uint8_t &dst, uint8_t src);

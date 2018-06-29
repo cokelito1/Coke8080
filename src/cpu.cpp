@@ -66,7 +66,8 @@ cpu::cpu() {
   insertOpcode(&cpu::SHLD, 0x23);
   //0x24-0x2F
   insertOpcode(&cpu::NOP, 0x30);
-  //0x31-0x3F
+  insertOpcode(&cpu::LXISP, 0x31);
+  //0x32-0x3F
   insertOpcode(&cpu::MOVBB, 0x40);
   insertOpcode(&cpu::MOVBC, 0x41);
   insertOpcode(&cpu::MOVBD, 0x42);
@@ -131,9 +132,28 @@ cpu::cpu() {
   insertOpcode(&cpu::MOVAL, 0x7D);
   insertOpcode(&cpu::MOVAHL, 0x7E);
   insertOpcode(&cpu::MOVAA, 0x7F);
-  //0x80-0xF1
+  //0x80-0xC8
+  insertOpcode(&cpu::RNZ, 0xC0);
+  //0xC1-0xC7
+  insertOpcode(&cpu::RZ, 0xC8);
+  insertOpcode(&cpu::RET, 0xC9);
+  //0xCA-0xCF
+  insertOpcode(&cpu::RNZ, 0xD0);
+  //0xD1-0xD7
+  insertOpcode(&cpu::RC, 0xD8);
+  //0xD9-0xDF
+  insertOpcode(&cpu::RPO, 0xE0);
+  //0xE1-0xE7
+  insertOpcode(&cpu::RPE, 0xE8);
+  //0xE9-0xEA
+  insertOpcode(&cpu::XCHG, 0xEB);
+  //0xEC-0xEF
+  insertOpcode(&cpu::RP, 0xF0);
+  //0xF1
   insertOpcode(&cpu::JPa16, 0xF2);
-  //0xF3-0xFF
+  //0xF3-0xF7
+  insertOpcode(&cpu::RM, 0xF8);
+  //0xF9-0xFF
 
   cycles = 0;
 }
@@ -523,6 +543,11 @@ void cpu::LXIDE() {
 void cpu::LXIHL() {
   LXI(mainBank.HL.word);
 }
+
+void cpu::LXISP() {
+  LXI(mainBank.SP.word);
+}
+
 //STAX Zone
 void cpu::STAX(uint16_t addr) {
   cycles -= 7;
@@ -625,6 +650,65 @@ void cpu::SHLD() {
 
   mem->writeMemory(mainBank.HL.bytes.low, val.bytes.low);
   mem->writeMemory(mainBank.HL.bytes.high, val.bytes.high);
+}
+
+void cpu::XCHG() {
+  uint16_t tmp = mainBank.DE.word;
+  mainBank.DE.word = mainBank.HL.word;
+  mainBank.HL.word = tmp;
+
+  cycles -= 5;
+  mainBank.PC.word++;
+}
+
+//R Zone
+void cpu::RET() {
+  mainBank.PC.bytes.low = stack.readMemory(mainBank.SP.word);
+  mainBank.PC.bytes.high = stack.readMemory(mainBank.SP.word + 1);
+  mainBank.SP.word += 2;
+
+  cycles -= 10;
+}
+
+void cpu::RCond(uint8_t flag) {
+  if(flag) {
+    RET();
+    cycles -= 1;
+  } else {
+    cycles -= 5;
+  }
+}
+
+void cpu::RNZ() {
+  RCond(!getZero());
+}
+
+void cpu::RZ() {
+  RCond(getZero());
+}
+
+void cpu::RNC() {
+  RCond(!getCarry());
+}
+
+void cpu::RC() {
+  RCond(getCarry());
+}
+
+void cpu::RPO() {
+  RCond(getParity());
+}
+
+void cpu::RPE() {
+  RCond(!getParity());
+}
+
+void cpu::RP() {
+  RCond(getParity());
+}
+
+void cpu::RM() {
+  RCond(getAux());
 }
 
 bank_t cpu::getMainBank() {
