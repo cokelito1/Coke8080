@@ -28,6 +28,10 @@ cpu::cpu() {
   mainBank.SP.word = 0x00;
   mainBank.PC.word = 0x00;
 
+  for(int i=0; i<0x100; i++) {
+    insertOpcode(&cpu::HLT, i);
+  }
+
   insertOpcode(&cpu::NOP, 0x00);
   insertOpcode(&cpu::LXIBC, 0x01);
   insertOpcode(&cpu::STAXBC, 0x02);
@@ -43,6 +47,94 @@ cpu::cpu() {
   insertOpcode(&cpu::MVIC, 0x0E);
   //0x0F
   insertOpcode(&cpu::NOP, 0x10);
+  insertOpcode(&cpu::LXIDE, 0x11);
+  insertOpcode(&cpu::STAXDE, 0x12);
+  insertOpcode(&cpu::INXDE, 0x13);
+  //0x14-0x15
+  insertOpcode(&cpu::MVID, 0x16);
+  //0x17
+  insertOpcode(&cpu::NOP, 0x18);
+  //0x19
+  insertOpcode(&cpu::LDAXDE, 0x1A);
+  insertOpcode(&cpu::DCXDE, 0x1B);
+  //0x1C-0x1D
+  insertOpcode(&cpu::MVIE, 0x1E);
+  //0x1F
+  insertOpcode(&cpu::NOP, 0x20);
+  insertOpcode(&cpu::LXIHL, 0x21);
+  //0x22
+  insertOpcode(&cpu::SHLD, 0x23);
+  //0x24-0x2F
+  insertOpcode(&cpu::NOP, 0x30);
+  //0x31-0x3F
+  insertOpcode(&cpu::MOVBB, 0x40);
+  insertOpcode(&cpu::MOVBC, 0x41);
+  insertOpcode(&cpu::MOVBD, 0x42);
+  insertOpcode(&cpu::MOVBE, 0x43);
+  insertOpcode(&cpu::MOVBH, 0x44);
+  insertOpcode(&cpu::MOVBL, 0x45);
+  insertOpcode(&cpu::MOVBHL, 0x46);
+  insertOpcode(&cpu::MOVBA, 0x47);
+  insertOpcode(&cpu::MOVCB, 0x48);
+  insertOpcode(&cpu::MOVCC, 0x49);
+  insertOpcode(&cpu::MOVCD, 0x4A);
+  insertOpcode(&cpu::MOVCE, 0x4B);
+  insertOpcode(&cpu::MOVCH, 0x4C);
+  insertOpcode(&cpu::MOVCL, 0x4D);
+  insertOpcode(&cpu::MOVCHL, 0x4E);
+  insertOpcode(&cpu::MOVCA, 0x4F);
+  insertOpcode(&cpu::MOVDB, 0x50);
+  insertOpcode(&cpu::MOVDC, 0x51);
+  insertOpcode(&cpu::MOVDD, 0x52);
+  insertOpcode(&cpu::MOVDE, 0x53);
+  insertOpcode(&cpu::MOVDH, 0x54);
+  insertOpcode(&cpu::MOVDL, 0x55);
+  insertOpcode(&cpu::MOVDHL, 0x56);
+  insertOpcode(&cpu::MOVDA, 0x57);
+  insertOpcode(&cpu::MOVEB, 0x58);
+  insertOpcode(&cpu::MOVEC, 0x59);
+  insertOpcode(&cpu::MOVED, 0x5A);
+  insertOpcode(&cpu::MOVEE, 0x5B);
+  insertOpcode(&cpu::MOVEH, 0x5C);
+  insertOpcode(&cpu::MOVEL, 0x5D);
+  insertOpcode(&cpu::MOVEHL, 0x5E);
+  insertOpcode(&cpu::MOVEA, 0x5F);
+  insertOpcode(&cpu::MOVHB, 0x60);
+  insertOpcode(&cpu::MOVHC, 0x61);
+  insertOpcode(&cpu::MOVHD, 0x62);
+  insertOpcode(&cpu::MOVHE, 0x63);
+  insertOpcode(&cpu::MOVHH, 0x64);
+  insertOpcode(&cpu::MOVHL, 0x65);
+  insertOpcode(&cpu::MOVHHL, 0x66);
+  insertOpcode(&cpu::MOVHA, 0x67);
+  insertOpcode(&cpu::MOVLB, 0x68);
+  insertOpcode(&cpu::MOVLC, 0x69);
+  insertOpcode(&cpu::MOVLD, 0x6A);
+  insertOpcode(&cpu::MOVLE, 0x6B);
+  insertOpcode(&cpu::MOVLH, 0x6C);
+  insertOpcode(&cpu::MOVLL, 0x6D);
+  insertOpcode(&cpu::MOVLHL, 0x6E);
+  insertOpcode(&cpu::MOVLA, 0x6F);
+  insertOpcode(&cpu::MOVToMemoryB, 0x70);
+  insertOpcode(&cpu::MOVToMemoryC, 0x71);
+  insertOpcode(&cpu::MOVToMemoryD, 0x72);
+  insertOpcode(&cpu::MOVToMemoryE, 0x73);
+  insertOpcode(&cpu::MOVToMemoryH, 0x74);
+  insertOpcode(&cpu::MOVToMemoryL, 0x75);
+  insertOpcode(&cpu::HLT, 0x76);
+  insertOpcode(&cpu::MOVToMemoryA, 0x77);
+  insertOpcode(&cpu::MOVAB, 0x78);
+  insertOpcode(&cpu::MOVAC, 0x79);
+  insertOpcode(&cpu::MOVAD, 0x7A);
+  insertOpcode(&cpu::MOVAE, 0x7B);
+  insertOpcode(&cpu::MOVAH, 0x7C);
+  insertOpcode(&cpu::MOVAL, 0x7D);
+  insertOpcode(&cpu::MOVAHL, 0x7E);
+  insertOpcode(&cpu::MOVAA, 0x7F);
+  //0x80-0xF1
+  insertOpcode(&cpu::JPa16, 0xF2);
+  //0xF3-0xFF
+
   cycles = 0;
 }
 
@@ -96,254 +188,7 @@ void cpu::cycle() {
   }
 
   uint8_t opcode = mem->readMemory(mainBank.PC.word);
-
-  switch(opcode) {
-    case 0x10:
-      NOP();
-      break;
-    case 0x11:
-      LXI(mainBank.DE.word);
-      break;
-    case 0x12:
-      STAX(mainBank.DE.word);
-      break;
-    case 0x13:
-      INX(mainBank.DE.word);
-      break;
-    case 0x16:
-      MVI(mainBank.DE.bytes.high);
-      break;
-    case 0x18:
-      NOP();
-      break;
-    case 0x1A:
-      LDAX(mainBank.DE.word);
-      break;
-    case 0x1B:
-      DCX(mainBank.DE.word);
-      break;
-    case 0x1E:
-      MVI(mainBank.BC.bytes.low);
-      break;
-    case 0x20:
-      NOP();
-      break;
-    case 0x21:
-      LXI(mainBank.HL.word);
-      break;
-    case 0x23:
-      SHLD();
-      break;
-    case 0x30:
-      NOP();
-      break;
-    case 0x40:
-      MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.high);
-      break;
-    case 0x41:
-      MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.low);
-      break;
-    case 0x42:
-      MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.high);
-      break;
-    case 0x43:
-      MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.low);
-      break;
-    case 0x44:
-      MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.high);
-      break;
-    case 0x45:
-      MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.low);
-      break;
-    case 0x46:
-      MOV(mainBank.BC.bytes.high, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x47:
-      MOV(mainBank.BC.bytes.high, mainBank.AF.bytes.high);
-      break;
-    case 0x48:
-      MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.high);
-      break;
-    case 0x49:
-      MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.low);
-      break;
-    case 0x4A:
-      MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.high);
-      break;
-    case 0x4B:
-      MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.low);
-      break;
-    case 0x4C:
-      MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.high);
-      break;
-    case 0x4D:
-      MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.low);
-      break;
-    case 0x4E:
-      MOV(mainBank.BC.bytes.low, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x4F:
-      MOV(mainBank.BC.bytes.low, mainBank.AF.bytes.high);
-      break;
-    case 0x50:
-      MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.high);
-      break;
-    case 0x51:
-      MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.low);
-      break;
-    case 0x52:
-      MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.high);
-      break;
-    case 0x53:
-      MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.low);
-      break;
-    case 0x54:
-      MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.high);
-      break;
-    case 0x55:
-      MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.low);
-      break;
-    case 0x56:
-      MOV(mainBank.DE.bytes.high, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x57:
-      MOV(mainBank.DE.bytes.high, mainBank.AF.bytes.high);
-      break;
-    case 0x58:
-      MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.high);
-      break;
-    case 0x59:
-      MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
-      break;
-    case 0x5A:
-      MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.high);
-      break;
-    case 0x5B:
-      MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.low);
-      break;
-    case 0x5C:
-      MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.high);
-      break;
-    case 0x5D:
-      MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.low);
-      break;
-    case 0x5E:
-      MOV(mainBank.DE.bytes.low, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x5F:
-      MOV(mainBank.DE.bytes.low, mainBank.AF.bytes.high);
-      break;
-    case 0x60:
-      MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.high);
-      break;
-    case 0x61:
-      MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.low);
-      break;
-    case 0x62:
-      MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.high);
-      break;
-    case 0x63:
-      MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.low);
-      break;
-    case 0x64:
-      MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.high);
-      break;
-    case 0x65:
-      MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.low);
-      break;
-    case 0x66:
-      MOV(mainBank.HL.bytes.high, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x67:
-      MOV(mainBank.HL.bytes.high, mainBank.AF.bytes.high);
-      break;
-    case 0x68:
-      MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.high);
-      break;
-    case 0x69:
-      MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.low);
-      break;
-    case 0x6A:
-      MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.high);
-      break;
-    case 0x6B:
-      MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.low);
-      break;
-    case 0x6C:
-      MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.high);
-      break;
-    case 0x6D:
-      MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.low);
-      break;
-    case 0x6E:
-      MOV(mainBank.HL.bytes.low, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x6F:
-      MOV(mainBank.HL.bytes.low, mainBank.AF.bytes.high);
-      break;
-    case 0x70:
-      MOVToMemory(mainBank.HL.word, mainBank.BC.bytes.high);
-      break;
-    case 0x71:
-      MOVToMemory(mainBank.HL.word, mainBank.BC.bytes.low);
-      break;
-    case 0x72:
-      MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.high);
-      break;
-    case 0x73:
-      MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.low);
-      break;
-    case 0x74:
-      MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.high);
-      break;
-    case 0x75:
-      MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.low);
-      break;
-    case 0x76:
-      cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "HLT" << endl;
-      HLT();
-      break;
-    case 0x77:
-      MOVToMemory(mainBank.HL.word, mainBank.AF.bytes.high);
-      break;
-    case 0x78:
-      MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.high);
-      break;
-    case 0x79:
-      MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.low);
-      break;
-    case 0x7A:
-      MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.high);
-      break;
-    case 0x7B:
-      MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.low);
-      break;
-    case 0x7C:
-      MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.high);
-      break;
-    case 0x7D:
-      MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.low);
-      break;
-    case 0x7E:
-      MOV(mainBank.AF.bytes.high, mem->readMemory(mainBank.HL.word));
-      cycles -= 2;
-      break;
-    case 0x7F:
-      MOV(mainBank.AF.bytes.high, mainBank.AF.bytes.high);
-      break;
-    case 0xF2:
-      JPa16();
-      break;
-
-    default:
-      cout << "default" << endl;
-  }
+  (this->*op[opcode])();
 }
 
 void cpu::insertOpcode(Opcodefunc function, uint16_t opcodeValue) {
@@ -357,8 +202,6 @@ void cpu::setMemInstance(memory<uint8_t> *instance) {
 void cpu::NOP() {
   cycles -= 4;
   mainBank.PC.word++;
-
-  cout << "0x" << setfill('0') << setw(4) << hex << uppercase << mainBank.PC.word << ": " << "NOP" << endl;
 }
 
 void cpu::JPa16() {
@@ -376,6 +219,7 @@ void cpu::JPa16() {
   mainBank.PC.word = addrJump;
 }
 
+//MOV Zone
 void cpu::MOV(uint8_t &dst, uint8_t src) {
   dst = src;
 
@@ -383,11 +227,271 @@ void cpu::MOV(uint8_t &dst, uint8_t src) {
   cycles -= 5;
 }
 
+void cpu::MOVBB() {
+  MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVBC() {
+  MOV(mainBank.BC.bytes.high, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVBD() {
+  MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVBE() {
+  MOV(mainBank.BC.bytes.high, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVBH() {
+  MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVBL() {
+  MOV(mainBank.BC.bytes.high, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVBHL() {
+  MOV(mainBank.BC.bytes.high, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVBA() {
+  MOV(mainBank.BC.bytes.high, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVCB() {
+  MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVCC() {
+  MOV(mainBank.BC.bytes.low, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVCD() {
+  MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVCE() {
+  MOV(mainBank.BC.bytes.low, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVCH() {
+  MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVCL() {
+  MOV(mainBank.BC.bytes.low, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVCHL() {
+  MOV(mainBank.BC.bytes.low, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVCA() {
+  MOV(mainBank.BC.bytes.low, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVDB() {
+  MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVDC() {
+  MOV(mainBank.DE.bytes.high, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVDD() {
+  MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVDE() {
+  MOV(mainBank.DE.bytes.high, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVDH() {
+  MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVDL() {
+  MOV(mainBank.DE.bytes.high, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVDHL() {
+  MOV(mainBank.DE.bytes.high, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVDA() {
+  MOV(mainBank.DE.bytes.high, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVEB() {
+  MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVEC() {
+  MOV(mainBank.DE.bytes.low, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVED() {
+  MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVEE() {
+  MOV(mainBank.DE.bytes.low, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVEH() {
+  MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVEL() {
+  MOV(mainBank.DE.bytes.low, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVEHL() {
+  MOV(mainBank.DE.bytes.low, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVEA() {
+  MOV(mainBank.DE.bytes.low, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVHB() {
+  MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVHC() {
+  MOV(mainBank.HL.bytes.high, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVHD() {
+  MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVHE() {
+  MOV(mainBank.HL.bytes.high, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVHH() {
+  MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVHL() {
+  MOV(mainBank.HL.bytes.high, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVHHL() {
+  MOV(mainBank.HL.bytes.high, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVHA() {
+  MOV(mainBank.HL.bytes.high, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVLB() {
+  MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVLC() {
+  MOV(mainBank.HL.bytes.low, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVLD() {
+  MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVLE() {
+  MOV(mainBank.HL.bytes.low, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVLH() {
+  MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVLL() {
+    MOV(mainBank.HL.bytes.low, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVLHL() {
+  MOV(mainBank.HL.bytes.low, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVLA() {
+  MOV(mainBank.HL.bytes.low, mainBank.AF.bytes.high);
+}
+
+void cpu::MOVAB() {
+  MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVAC() {
+  MOV(mainBank.AF.bytes.high, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVAD() {
+  MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVAE() {
+  MOV(mainBank.AF.bytes.high, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVAH() {
+  MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVAL() {
+  MOV(mainBank.AF.bytes.high, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVAHL() {
+  MOV(mainBank.AF.bytes.high, mem->readMemory(mainBank.HL.word));
+  cycles -= 2;
+}
+
+void cpu::MOVAA() {
+  MOV(mainBank.AF.bytes.high, mainBank.AF.bytes.high);
+}
+
+//MOVToMemory Zone
 void cpu::MOVToMemory(uint16_t addr, uint8_t src) {
   mem->writeMemory(src, addr);
 
   mainBank.PC.word++;
   cycles -= 7;
+}
+
+void cpu::MOVToMemoryB() {
+  MOVToMemory(mainBank.HL.word, mainBank.BC.bytes.high);
+}
+
+void cpu::MOVToMemoryC() {
+  MOVToMemory(mainBank.HL.word, mainBank.BC.bytes.low);
+}
+
+void cpu::MOVToMemoryD() {
+  MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.high);
+}
+
+void cpu::MOVToMemoryE() {
+  MOVToMemory(mainBank.HL.word, mainBank.DE.bytes.low);
+}
+
+void cpu::MOVToMemoryH() {
+  MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.high);
+}
+
+void cpu::MOVToMemoryL() {
+  MOVToMemory(mainBank.HL.word, mainBank.HL.bytes.low);
+}
+
+void cpu::MOVToMemoryA() {
+  MOVToMemory(mainBank.HL.word, mainBank.AF.bytes.high);
 }
 
 void cpu::HLT() {
@@ -412,6 +516,13 @@ void cpu::LXIBC() {
   LXI(mainBank.BC.word);
 }
 
+void cpu::LXIDE() {
+  LXI(mainBank.DE.word);
+}
+
+void cpu::LXIHL() {
+  LXI(mainBank.HL.word);
+}
 //STAX Zone
 void cpu::STAX(uint16_t addr) {
   cycles -= 7;
@@ -424,6 +535,10 @@ void cpu::STAXBC() {
   STAX(mainBank.BC.word);
 }
 
+void cpu::STAXDE() {
+  STAX(mainBank.DE.word);
+}
+
 //INX Zone
 void cpu::INX(uint16_t &reg) {
   cycles -= 5;
@@ -434,6 +549,10 @@ void cpu::INX(uint16_t &reg) {
 
 void cpu::INXBC() {
   INX(mainBank.BC.word);
+}
+
+void cpu::INXDE() {
+  INX(mainBank.DE.word);
 }
 
 //MVI Zone
@@ -453,6 +572,14 @@ void cpu::MVIC() {
   MVI(mainBank.BC.bytes.low);
 }
 
+void cpu::MVID() {
+  MVI(mainBank.DE.bytes.high);
+}
+
+void cpu::MVIE() {
+  MVI(mainBank.DE.bytes.low);
+}
+
 //LDAX Zone
 void cpu::LDAX(uint16_t addr) {
   cycles -= 7;
@@ -465,6 +592,10 @@ void cpu::LDAXBC() {
   LDAX(mainBank.BC.word);
 }
 
+void cpu::LDAXDE() {
+  LDAX(mainBank.DE.word);
+}
+
 //DCX Zone
 void cpu::DCX(uint16_t &reg) {
   cycles -= 5;
@@ -475,6 +606,10 @@ void cpu::DCX(uint16_t &reg) {
 
 void cpu::DCXBC() {
   DCX(mainBank.BC.word);
+}
+
+void cpu::DCXDE() {
+  DCX(mainBank.DE.word);
 }
 
 void cpu::SHLD() {

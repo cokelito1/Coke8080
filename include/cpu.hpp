@@ -164,31 +164,105 @@ private:
   void MVI(uint8_t &reg);
   void LDAX(uint16_t addr);
   void DCX(uint16_t &reg);
-  void MOVToMemory(uint16_t addr, uint8_t src);
   void SHLD();
+
+  //MOVToMemory Zone
+  void MOVToMemory(uint16_t addr, uint8_t src);
+  void MOVToMemoryB();
+  void MOVToMemoryC();
+  void MOVToMemoryD();
+  void MOVToMemoryE();
+  void MOVToMemoryH();
+  void MOVToMemoryL();
+  void MOVToMemoryA();
 
   //LXI Zone
   void LXIBC();
+  void LXIDE();
+  void LXIHL();
 
   //Stax Zone
   void STAXBC();
+  void STAXDE();
 
   //INX Zone
   void INXBC();
+  void INXDE();
 
   //MVI Zone
   void MVIB();
   void MVIC();
+  void MVID();
+  void MVIE();
 
   //LDAX Zone
   void LDAXBC();
+  void LDAXDE();
 
   //DCX Zone
   void DCXBC();
+  void DCXDE();
 
-  Opcodefunc op[0x10000];
-
+  //MOV Zone
   void MOV(uint8_t &dst, uint8_t src);
+  void MOVBB();
+  void MOVBC();
+  void MOVBD();
+  void MOVBE();
+  void MOVBH();
+  void MOVBL();
+  void MOVBHL();
+  void MOVBA();
+  void MOVCB();
+  void MOVCC();
+  void MOVCD();
+  void MOVCE();
+  void MOVCH();
+  void MOVCL();
+  void MOVCHL();
+  void MOVCA();
+  void MOVDB();
+  void MOVDC();
+  void MOVDD();
+  void MOVDE();
+  void MOVDH();
+  void MOVDL();
+  void MOVDHL();
+  void MOVDA();
+  void MOVEB();
+  void MOVEC();
+  void MOVED();
+  void MOVEE();
+  void MOVEH();
+  void MOVEL();
+  void MOVEHL();
+  void MOVEA();
+  void MOVHB();
+  void MOVHC();
+  void MOVHD();
+  void MOVHE();
+  void MOVHH();
+  void MOVHL();
+  void MOVHHL();
+  void MOVHA();
+  void MOVLB();
+  void MOVLC();
+  void MOVLD();
+  void MOVLE();
+  void MOVLH();
+  void MOVLL();
+  void MOVLHL();
+  void MOVLA();
+  void MOVAB();
+  void MOVAC();
+  void MOVAD();
+  void MOVAE();
+  void MOVAH();
+  void MOVAL();
+  void MOVAHL();
+  void MOVAA();
+
+  Opcodefunc op[0x100];
 
   bool getCarry();
   bool get2();
