@@ -18,6 +18,8 @@ This program is free software: you can redistribute it and/or modify
 
 #include <cstdint>
 #include <functional>
+#include <map>
+#include <queue>
 
 #include "memory.hpp"
 
@@ -141,6 +143,16 @@ public:
   * @author Jorge Bravo
   */
   void setMemInstance(memory<uint8_t> *instance);
+
+  /**
+  * @brief set a queue instance for mmio
+  *
+  * @param address of the instance
+  * @param Queue pointer to mmio
+  * @return void
+  * @author Jorge Bravo
+  */
+  void setMMIOInstance(uint16_t address, std::queue<uint8_t> *mmio);
 
   /**
   * @brief get mainBank, main purpose to use writeRegistersToFile on machine
@@ -289,6 +301,8 @@ private:
 
   memory<uint8_t> *mem = nullptr;
   memory<uint8_t> stack;
+
+  std::map<uint16_t, std::queue<uint8_t> *> IO;
 };
 
 #endif //_CPU_HPP_

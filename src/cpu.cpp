@@ -714,3 +714,7 @@ void cpu::RM() {
 bank_t cpu::getMainBank() {
   return mainBank;
 }
+
+void cpu::setMMIOInstance(uint16_t address, queue<uint8_t> *mmio) {
+  IO[address] = mmio;
+}

@@ -42,7 +42,9 @@ bool machine::loadRom(std::string filePath) {
   ifstream rom(filePath, ios::in|ios::binary|ios::ate);
   if(rom.is_open()) {
     ifstream::pos_type size = rom.tellg();
+    #pragma warning(disable:4244)
     uint8_t *romData = new uint8_t[size];
+    #pragma warning(default:4244)
     rom.seekg(0, ios::beg);
     rom.read((char *) romData, size);
     rom.close();
@@ -76,6 +78,7 @@ void machine::setLogFile(std::string logFile) {
 }
 
 void machine::writeRegistersToFile(std::string filePath) {
+  #pragma warning(disable:4333)
   bank_t currentRegisters = chip->getMainBank();
 
   ofstream registerLog;
@@ -101,4 +104,5 @@ void machine::writeRegistersToFile(std::string filePath) {
   registerLog << "HL: 0x" <<  hex << currentRegisters.HL.word << endl << endl;
 
   registerLog.close();
+  #pragma warning(default:4333)
  }
