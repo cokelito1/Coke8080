@@ -1,15 +1,25 @@
 sudo: required
 before_install:
-  - sudo apt-get install cmake
-
+- sudo apt-get install cmake
 language: cpp
-
 compiler:
-  - gcc
-
+- gcc
 script:
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make
-  - ./Coke8080 ../rom.bin
+- mkdir build
+- cd build
+- cmake ..
+- make
+- "./Coke8080 ../rom.bin"
+- cd ..
+- base=$(basename $PWD)
+- cd ..
+- tar -czf release.tar $base
+- mv release.tar $base
+
+deploy:
+  provider: releases
+  api_key:
+    secure: dqgK/ik9AvwOMY0kX8Rj+Tdl5lfbM1N3jk3q1cZ28LEhuFf7OtKpsYhavvyWOjCVgDpDrrvYXa/8WmwFIJz9XFt00sLvdqf1E11EcjrpQUakjAiJla8yHcM3XyOXWNFC0KYAt8IvFppdWYcs+Kf5iRLbjEJTAY+3yIDGjtoLNGTuymY76kMPYoubV6iaymgapaVgbofLWfDCXgCt9slVbMd6Me0TmB8h9KbcJwPPpvrAhj7ZD0xK6hIHlvBHx5u/VsUCF+LXjqw9ndIjMjfvCnCtwj8xIM3X2tpfviTtcMaK45oBPo+x6nwThRc5Q/ZmyZB0IbGj9W9NVUaJCiPJJUqwHnbkYD1yDxgdeHcHBIaya6KbUb+A7ixb8rjAp4zTTrJIVqIw0vvR1n1NUPNnFDU+LZgCvMdgt/PsH4oBkDCDzrx5uNgGcHTVNeEiOspkTOtTJUdjBv1x6Jw2BPaa5rJ/Bpxi/FUbXTusOhi79LASznGk1JcfDzVNmdBGmfsPGYUkFVPCJr0Lxf9H74BL/BhOTj/u4VR9+nDJsjSorlXravnQZtSFCmRjMdRmFLHwKQ0VR9epZ2RnjmMQZFjw1ixy0tpSlEYlv57B49CQf/PaONGZC4RrZ08a23QwEGU8hnXV5CH0lmFtjK6Rn9Uo7lVNWsOBG8qKO75mkfVWOXE=
+  file: release.tar
+  on:
+    repo: cokelito1/Coke8080
