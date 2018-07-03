@@ -15,6 +15,7 @@ script:
 - cd ..
 - tar -czf release.tar $base
 - mv release.tar $base
+- cd $base
 
 deploy:
   provider: releases
