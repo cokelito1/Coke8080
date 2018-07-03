@@ -40,7 +40,7 @@ cpu::cpu() {
   insertOpcode(&cpu::MVIB, 0x06);
   insertOpcode(&cpu::RLC, 0x07);
   insertOpcode(&cpu::NOP, 0x08);
-  //0x09
+  insertOpcode(&cpu::DADB, 0x09);
   insertOpcode(&cpu::LDAXBC, 0x0A);
   insertOpcode(&cpu::DCXBC, 0x0B);
   //0x0C-0x0D
@@ -54,7 +54,7 @@ cpu::cpu() {
   insertOpcode(&cpu::MVID, 0x16);
   //0x17
   insertOpcode(&cpu::NOP, 0x18);
-  //0x19
+  insertOpcode(&cpu::DADD, 0x19);
   insertOpcode(&cpu::LDAXDE, 0x1A);
   insertOpcode(&cpu::DCXDE, 0x1B);
   //0x1C-0x1D
@@ -64,10 +64,14 @@ cpu::cpu() {
   insertOpcode(&cpu::LXIHL, 0x21);
   //0x22
   insertOpcode(&cpu::SHLD, 0x23);
-  //0x24-0x2F
+  //0x24-0x28
+  insertOpcode(&cpu::DADH, 0x29);
+  //0x2A-0x2F
   insertOpcode(&cpu::NOP, 0x30);
   insertOpcode(&cpu::LXISP, 0x31);
-  //0x32-0x3F
+  //0x32-0x38
+  insertOpcode(&cpu::DADSP, 0x39);
+  //0x3A-0x3F
   insertOpcode(&cpu::MOVBB, 0x40);
   insertOpcode(&cpu::MOVBC, 0x41);
   insertOpcode(&cpu::MOVBD, 0x42);
@@ -722,6 +726,36 @@ void cpu::RP() {
 
 void cpu::RM() {
   RCond(getAux());
+}
+
+//DAD Zone
+void cpu::DAD(const uint16_t &reg) {
+  if(mainBank.HL.word + reg > 0xFFFF) {
+    mainBank.AF.bytes.low |= FLAG_CARRY;
+  } else {
+    mainBank.AF.bytes.low &= (~FLAG_CARRY);
+  }
+
+  mainBank.HL.word += reg;
+
+  mainBank.PC.word++;
+  cycles -= 10;
+}
+
+void cpu::DADB() {
+  DAD(mainBank.BC.word);
+}
+
+void cpu::DADD() {
+  DAD(mainBank.DE.word);
+}
+
+void cpu::DADH() {
+  DAD(mainBank.HL.word);
+}
+
+void cpu::DADSP() {
+  DAD(mainBank.SP.word);
 }
 
 bank_t cpu::getMainBank() {

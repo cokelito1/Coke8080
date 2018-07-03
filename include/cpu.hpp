@@ -289,6 +289,13 @@ private:
   void MOVAHL();
   void MOVAA();
 
+  //DAD Zone
+  void DAD(const uint16_t &reg);
+  void DADB();
+  void DADD();
+  void DADH();
+  void DADSP();
+
   Opcodefunc op[0x100];
 
   bool getCarry();
