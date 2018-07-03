@@ -178,6 +178,7 @@ private:
   void DCX(uint16_t &reg);
   void RET();
   void XCHG();
+  void RLC();
   void SHLD();
 
   //MOVToMemory Zone

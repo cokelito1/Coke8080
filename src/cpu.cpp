@@ -38,7 +38,7 @@ cpu::cpu() {
   insertOpcode(&cpu::INXBC, 0x03);
   //0x04-0x05
   insertOpcode(&cpu::MVIB, 0x06);
-  //0x07
+  insertOpcode(&cpu::RLC, 0x07);
   insertOpcode(&cpu::NOP, 0x08);
   //0x09
   insertOpcode(&cpu::LDAXBC, 0x0A);
@@ -650,6 +650,19 @@ void cpu::SHLD() {
 
   mem->writeMemory(mainBank.HL.bytes.low, val.bytes.low);
   mem->writeMemory(mainBank.HL.bytes.high, val.bytes.high);
+}
+
+void cpu::RLC() {
+  uint8_t Mask = (0xFF & (mainBank.AF.bytes.high & 0x80));
+  mainBank.AF.bytes.low |= Mask;
+
+  uint8_t tmp = (mainBank.AF.bytes.high & 0x80) >> 7;
+  mainBank.AF.bytes.high <<= 1;
+
+  mainBank.AF.bytes.high |= tmp;
+
+  mainBank.PC.word++;
+  cycles -= 4;
 }
 
 void cpu::XCHG() {
