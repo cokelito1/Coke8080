@@ -6,4 +6,4 @@ This code was written by a hobbist programmer so prepare yourself to view
 an horrible written code
 
 ## Continuos integration
-Semaphore CI: [![Build Status](https://semaphoreci.com/api/v1/cokelito1/coke8080/branches/master/badge.svg)](https://semaphoreci.com/cokelito1/coke8080)
+Travis ci: [![Build Status](https://travis-ci.org/cokelito1/Coke8080.svg?branch=master](https://travis-ci.org/cokelito1/Coke8080)
