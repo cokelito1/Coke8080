@@ -19,7 +19,7 @@ This program is free software: you can redistribute it and/or modify
 #include <cstdint>
 #include <functional>
 #include <map>
-#include <queue>
+#include <stack>
 
 #include "memory.hpp"
 
@@ -152,7 +152,7 @@ public:
   * @return void
   * @author Jorge Bravo
   */
-  void setMMIOInstance(uint16_t address, std::queue<uint8_t> *mmio);
+  void setMMIOInstance(uint16_t address, std::stack<uint8_t> *mmio);
 
   /**
   * @brief get mainBank, main purpose to use writeRegistersToFile on machine
@@ -307,10 +307,14 @@ private:
   bool getZero();
   bool getSign();
 
+  //IO Shit zone
+  uint8_t readFromIO(uint16_t addr);
+  bool writeToIO(uint16_t addr, uint8_t data);
+
   memory<uint8_t> *mem = nullptr;
   memory<uint8_t> stack;
 
-  std::map<uint16_t, std::queue<uint8_t> *> IO;
+  std::map<uint16_t, std::stack<uint8_t> *> IO;
 };
 
 #endif //_CPU_HPP_

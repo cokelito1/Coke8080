@@ -762,6 +762,28 @@ bank_t cpu::getMainBank() {
   return mainBank;
 }
 
-void cpu::setMMIOInstance(uint16_t address, queue<uint8_t> *mmio) {
-  IO[address] = mmio;
+void cpu::setMMIOInstance(uint16_t address, std::stack<uint8_t> *mmio) {
+  IO.insert(std::pair<uint16_t, std::stack<uint8_t> *>(address, mmio));
+}
+
+uint8_t cpu::readFromIO(uint16_t address) {
+  auto it = IO.find(address);
+  if(it == IO.end()) {
+    return 0;
+  }
+
+  uint8_t retVal = it->second->top();
+  it->second->pop();
+
+  return retVal;
+}
+
+bool cpu::writeToIO(uint16_t address, uint8_t data) {
+  auto it = IO.find(address);
+  if(it == IO.end()) {
+    return false;
+  }
+
+  it->second->push(data);
+  return true;
 }
