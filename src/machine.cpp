@@ -87,20 +87,20 @@ void machine::writeRegistersToFile(std::string filePath) {
   registerLog << "PC: 0x" <<  currentRegisters.PC.word << endl;
   registerLog << "SP: 0x" <<  currentRegisters.SP.word << endl;
 
-  registerLog << "A: 0x" <<  hex << (currentRegisters.AF.bytes.high >> 8) << ", ";
-  registerLog << "F: 0x" <<  hex << (currentRegisters.AF.word & 0x00FF) << ", ";
+  registerLog << "A: 0x" <<  hex << unsigned(currentRegisters.AF.bytes.high) << ", ";
+  registerLog << "F: 0x" <<  hex << unsigned(currentRegisters.AF.bytes.low) << ", ";
   registerLog << "AF: 0x" <<  hex << currentRegisters.AF.word << endl;
 
-  registerLog << "B: 0x" <<  hex << (currentRegisters.BC.bytes.high >> 8) << ", ";
-  registerLog << "C: 0x" <<  hex << (currentRegisters.BC.word & 0x00FF) << ", ";
+  registerLog << "B: 0x" <<  hex << unsigned(currentRegisters.BC.bytes.high) << ", ";
+  registerLog << "C: 0x" <<  hex << unsigned(currentRegisters.BC.bytes.low) << ", ";
   registerLog << "BC: 0x" <<  hex << currentRegisters.BC.word << endl;
 
-  registerLog << "D: 0x" <<  hex << (currentRegisters.DE.bytes.high >> 8) << ", ";
-  registerLog << "E: 0x" <<  hex << (currentRegisters.DE.word & 0x00FF) << ", ";
+  registerLog << "D: 0x" <<  hex << unsigned(currentRegisters.DE.bytes.high) << ", ";
+  registerLog << "E: 0x" <<  hex << unsigned(currentRegisters.DE.bytes.low) << ", ";
   registerLog << "DE: 0x" <<  hex << currentRegisters.DE.word << endl;
 
-  registerLog << "H: 0x" <<  hex << (currentRegisters.HL.bytes.high >> 8) << ", ";
-  registerLog << "L: 0x" <<  hex << (currentRegisters.HL.word & 0x00FF) << ", ";
+  registerLog << "H: 0x" <<  hex << unsigned(currentRegisters.HL.bytes.high) << ", ";
+  registerLog << "L: 0x" <<  hex << unsigned(currentRegisters.HL.bytes.low) << ", ";
   registerLog << "HL: 0x" <<  hex << currentRegisters.HL.word << endl << endl;
 
   registerLog.close();
